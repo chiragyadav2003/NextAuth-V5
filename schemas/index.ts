@@ -8,3 +8,5 @@ export const LoginSchema = z.object({
     message: "Password is Required"
   })
 });
+
+export type ValidateLoginSchema = z.infer<typeof LoginSchema>;
