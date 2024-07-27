@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useTransition } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button"
+import { useState, useTransition } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,43 +12,41 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
-import { register } from "@/actions/register";
+import { register } from '@/actions/register';
 
-import { RegisterSchema } from "@/schemas";
-import { CardWrapper } from "@/components/auth/card-wrapper"
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
-
+import { RegisterSchema } from '@/schemas';
+import { CardWrapper } from '@/components/auth/card-wrapper';
+import { FormError } from '@/components/form-error';
+import { FormSuccess } from '@/components/form-success';
 
 export const RegisterForm = () => {
-  const [isPending, startTransition] = useTransition()
-  const [error, setError] = useState<string | undefined>("")
-  const [success, setSuccess] = useState<string | undefined>("")
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      name: ""
-    }
-  })
+      email: '',
+      password: '',
+      name: '',
+    },
+  });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    setError("");
-    setSuccess("")
+    setError('');
+    setSuccess('');
 
     startTransition(() => {
-      register(values)
-        .then(data => {
-          setError(data.error);
-          setSuccess(data.success)
-        });
+      register(values).then((data) => {
+        setError(data.error);
+        setSuccess(data.success);
+      });
     });
-  }
+  };
 
   return (
     <CardWrapper
@@ -67,10 +65,7 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isPending}
-                      placeholder="John Doe"
-                      {...field} />
+                    <Input disabled={isPending} placeholder="John Doe" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,31 +96,20 @@ export const RegisterForm = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isPending}
-                      placeholder="******"
-                      type="password"
-                      {...field} />
+                    <Input disabled={isPending} placeholder="******" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <FormError
-            message={error}
-          />
-          <FormSuccess
-            message={success}
-          />
-          <Button
-            disabled={isPending}
-            className="w-full"
-            type="submit">
+          <FormError message={error} />
+          <FormSuccess message={success} />
+          <Button disabled={isPending} className="w-full" type="submit">
             Submit
           </Button>
         </form>
       </Form>
-    </CardWrapper >
-  )
-}
+    </CardWrapper>
+  );
+};

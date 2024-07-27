@@ -10,7 +10,7 @@ export const login = async (values: ValidateLoginSchema) => {
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid Fields" }
+    return { error: 'Invalid Fields' };
   }
 
   const { email, password } = validatedFields.data;
@@ -20,17 +20,17 @@ export const login = async (values: ValidateLoginSchema) => {
       email,
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
-    })
-    return { success: "successful login!" }
+    });
+    return { success: 'successful login!' };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid credentials!" }
+        case 'CredentialsSignin':
+          return { error: 'Invalid credentials!' };
         default:
-          return { error: "Something went wrong!" }
+          return { error: 'Something went wrong!' };
       }
     }
     throw error;
   }
-} 
+};

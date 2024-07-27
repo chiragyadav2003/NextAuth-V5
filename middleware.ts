@@ -1,13 +1,8 @@
-import authConfig from "@/auth.config";
-import NextAuth, { Session } from "next-auth";
+import authConfig from '@/auth.config';
+import NextAuth, { Session } from 'next-auth';
 
-import {
-  publicRoutes,
-  authRoutes,
-  apiAuthPrefix,
-  DEFAULT_LOGIN_REDIRECT
-} from "@/routes"
-import { NextRequest } from "next/server";
+import { publicRoutes, authRoutes, apiAuthPrefix, DEFAULT_LOGIN_REDIRECT } from '@/routes';
+import { NextRequest } from 'next/server';
 
 const { auth } = NextAuth(authConfig);
 
@@ -24,12 +19,11 @@ export default auth((req: NextRequest & { auth: Session | null }): Response | vo
    * always allow user to visit this api route, it is required for next auth to work properly
    * e.g : 'api/auth/providers' is needed to work always for next-auth to work properly
    */
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
+  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname)
-
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
     return;
@@ -47,9 +41,8 @@ export default auth((req: NextRequest & { auth: Session | null }): Response | vo
   }
 
   return;
-})
-
+});
 
 export const config = {
   matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
-}; 
+};
