@@ -1,10 +1,9 @@
 import bcrypt from 'bcryptjs';
-import type { NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import type { NextAuthConfig } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
 
-import { getUserByEmail } from "@/data/user";
-import { LoginSchema } from "@/schemas";
-import { z } from 'zod';
+import { getUserByEmail } from '@/data/user';
+import { LoginSchema } from '@/schemas';
 
 export default {
   providers: [
@@ -16,7 +15,7 @@ export default {
           const { email, password } = validatedFields.data;
           const user = await getUserByEmail(email);
 
-          //if we do not have user or if user have registered using social provider
+          //if we do not have user or if user have registered using social provider - google, github
           if (!user || !user.password) {
             return null;
           }

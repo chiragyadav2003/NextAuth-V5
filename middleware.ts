@@ -20,8 +20,10 @@ export default auth((req: NextRequest & { auth: Session | null }): Response | vo
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth; //convert to boolean
 
-  //always allow this route, it is required for next auth to work properly
-  // e.g - api/auth/providers
+  /**
+   * always allow user to visit this api route, it is required for next auth to work properly
+   * e.g : 'api/auth/providers' is needed to work always for next-auth to work properly
+   */
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
 
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
@@ -34,7 +36,6 @@ export default auth((req: NextRequest & { auth: Session | null }): Response | vo
   }
 
   if (isAuthRoute) {
-    //if user is logged inn, redirect him
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }

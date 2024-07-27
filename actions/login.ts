@@ -1,9 +1,10 @@
-"use server";
+'use server';
 
-import { signIn } from "@/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { LoginSchema, ValidateLoginSchema } from "@/schemas";
-import { AuthError } from "next-auth";
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
+
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
+import { LoginSchema, ValidateLoginSchema } from '@/schemas';
 
 export const login = async (values: ValidateLoginSchema) => {
   const validatedFields = LoginSchema.safeParse(values);
