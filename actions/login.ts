@@ -21,7 +21,6 @@ export const login = async (values: ValidateLoginSchema) => {
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
-    return { success: 'successful login!' };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
