@@ -1,9 +1,12 @@
 'use server';
 
 import bcrypt from 'bcryptjs';
+
 import db from '@/lib/db';
 import { RegisterSchema, ValidateRegisterSchema } from '@/schemas';
 import { getUserByEmail } from '@/data/user';
+import { generateVerificationToken } from '@/lib/tokens';
+import { SendVerificationEmail } from '@/lib/mail';
 
 export const register = async (values: ValidateRegisterSchema) => {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -29,7 +32,9 @@ export const register = async (values: ValidateRegisterSchema) => {
     },
   });
 
-  //TODO: send verification token to email
+  const verificationToken = await generateVerificationToken(email);
 
-  return { success: 'User created!' };
+  await SendVerificationEmail(verificationToken.email, verificationToken.token);
+
+  return { success: 'Confirmation email sent!' };
 };
