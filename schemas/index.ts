@@ -21,6 +21,14 @@ export const RegisterSchema = z.object({
   }),
 });
 
+export const ResetSchema = z.object({
+  email: z.string().email({
+    message: 'Email is required',
+  }),
+});
+
 export type ValidateLoginSchema = z.infer<typeof LoginSchema>;
 
 export type ValidateRegisterSchema = z.infer<typeof RegisterSchema>;
+
+export type ValidateResetSchema = z.infer<typeof ResetSchema>;
