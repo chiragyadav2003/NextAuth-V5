@@ -27,7 +27,7 @@ export const login = async (values: ValidateLoginSchema) => {
   }
 
   const matchPassword = await bcrypt.compare(password, existingUser.password);
-  if (!matchPassword) return { error: 'Wrong password!' };
+  if (!matchPassword) return { error: 'Invalid credentials!' };
 
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken(existingUser.email);
