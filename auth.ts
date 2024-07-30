@@ -5,6 +5,7 @@ import { PrismaClient, UserRole } from '@prisma/client';
 import { getUserById } from '@/data/user';
 import authConfig from '@/auth.config';
 import db from '@/lib/db';
+import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
 
 const prisma = new PrismaClient();
 
@@ -36,7 +37,21 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         return false;
       }
 
-      //TODO: add 2FA check
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
+
+        console.log({ twoFactorConfirmation });
+
+        if (!twoFactorConfirmation) return false;
+
+        // delete 2fa confirmation for next signin
+        await db.twoFactorConfirmation.delete({
+          where: {
+            id: twoFactorConfirmation.id,
+          },
+        });
+      }
+
       return true;
     },
     async session({ session, token }) {

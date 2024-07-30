@@ -2,13 +2,13 @@
 
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import bcrypt from 'bcryptjs';
 
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { LoginSchema, ValidateLoginSchema } from '@/schemas';
-import { generateVerificationToken } from '@/lib/tokens';
+import { generateVerificationToken, generateTwoFactorToken } from '@/lib/tokens';
 import { getUserByEmail } from '@/data/user';
-import { SendVerificationEmail } from '@/lib/mail';
-import bcrypt from 'bcryptjs';
+import { SendVerificationEmail, SendTwoFactorTokenEmail } from '@/lib/mail';
 
 export const login = async (values: ValidateLoginSchema) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -30,10 +30,14 @@ export const login = async (values: ValidateLoginSchema) => {
 
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken(existingUser.email);
-
     await SendVerificationEmail(verificationToken.email, verificationToken.token);
-
     return { success: 'Confirmation email sent!' };
+  }
+
+  if (existingUser.isTwoFactorEnabled && existingUser.email) {
+    const twoFactorToken = await generateTwoFactorToken(existingUser.email);
+    await SendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
+    return { twoFactor: true };
   }
 
   try {

@@ -31,3 +31,16 @@ export const SendPasswordResetEmail = async (email: string, token: string) => {
     return { error: 'email sending error' };
   }
 };
+
+export const SendTwoFactorTokenEmail = async (email: string, token: string) => {
+  try {
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: email,
+      subject: '2FA code',
+      html: `<p>Your 2FA code : ${token}</p>`,
+    });
+  } catch (error) {
+    return { error: 'email sending error' };
+  }
+};
