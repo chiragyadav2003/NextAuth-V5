@@ -1,9 +1,10 @@
-import { auth } from '@/auth';
+'use client';
 import { Button } from '@/components/ui/button';
 import { logout } from '@/actions/logout';
+import { useSession } from 'next-auth/react';
 
-const SettingsPage = async () => {
-  const session = await auth();
+const SettingsPage = () => {
+  const session = useSession();
   return (
     <div>
       <pre className="p-4">{JSON.stringify(session, null, 2)}</pre>
