@@ -15,7 +15,6 @@ import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation
 
 export const login = async (values: ValidateLoginSchema) => {
   const validatedFields = LoginSchema.safeParse(values);
-
   if (!validatedFields.success) {
     return { error: 'Invalid Fields!' };
   }
@@ -23,13 +22,12 @@ export const login = async (values: ValidateLoginSchema) => {
   const { email, password, code } = validatedFields.data;
 
   const existingUser = await getUserByEmail(email);
-
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: 'Email does not exist!' };
   }
 
-  // const matchPassword = await bcrypt.compare(password, existingUser.password);
-  // if (!matchPassword) return { error: 'Wrong password!' };
+  const matchPassword = await bcrypt.compare(password, existingUser.password);
+  if (!matchPassword) return { error: 'Wrong password!' };
 
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken(existingUser.email);
@@ -50,9 +48,7 @@ export const login = async (values: ValidateLoginSchema) => {
 
       //remove 2fa token
       await db.twoFactorToken.delete({
-        where: {
-          id: twoFactorToken.id,
-        },
+        where: { id: twoFactorToken.id },
       });
 
       //create new 2FA confirmation
