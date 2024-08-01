@@ -6,7 +6,9 @@ const ProtectedLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="absolute top-20 mx-auto w-full max-w-7xl">
         <Navbar />
       </div>
-      {children}
+      <div className="absolute top-80 mx-auto flex w-[60%] max-w-7xl items-center justify-center">
+        {children}
+      </div>
     </div>
   );
 };

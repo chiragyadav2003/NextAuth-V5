@@ -1,9 +1,10 @@
+import { UserInfo } from '@/components/user-info';
 import { currentUser } from '@/lib/currentUser-auth';
 const ServerPage = async () => {
   const user = await currentUser();
   return (
-    <div>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+    <div className="mx-auto flex w-full items-center justify-center">
+      <UserInfo user={user} label="🖥️ Server Component" />
     </div>
   );
 };
