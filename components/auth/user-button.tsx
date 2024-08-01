@@ -29,7 +29,7 @@ export const UserButton = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="end">
         <LogoutButton>
-          <DropdownMenuItem className="gap-x-4 hover:bg-slate-200">
+          <DropdownMenuItem className="gap-x-4 transition-colors duration-200 hover:bg-slate-400">
             <ExitIcon className="h-4 w-4" />
             Logout
           </DropdownMenuItem>
