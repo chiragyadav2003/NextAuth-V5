@@ -34,6 +34,10 @@ export const NewPasswordSchema = z.object({
   }),
 });
 
+export const SettingsSchema = z.object({
+  name: z.optional(z.string()),
+});
+
 export type ValidateLoginSchema = z.infer<typeof LoginSchema>;
 
 export type ValidateRegisterSchema = z.infer<typeof RegisterSchema>;
@@ -41,3 +45,5 @@ export type ValidateRegisterSchema = z.infer<typeof RegisterSchema>;
 export type ValidateResetSchema = z.infer<typeof ResetSchema>;
 
 export type ValidateNewPasswordSchema = z.infer<typeof NewPasswordSchema>;
+
+export type ValidateSettingsSchema = z.infer<typeof SettingsSchema>;
