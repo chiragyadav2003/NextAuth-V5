@@ -6,6 +6,7 @@ import { getUserById } from '@/data/user';
 import authConfig from '@/auth.config';
 import db from '@/lib/db';
 import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
+import { getAccountByUserId } from './data/account';
 
 const prisma = new PrismaClient();
 
@@ -71,6 +72,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.name = token.name;
         session.user.email = token.email as string;
+        session.user.isOAuth = token.isOAuth as boolean;
       }
 
       return session;
@@ -83,6 +85,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       const existingUser = await getUserById(token.sub);
 
       if (!existingUser) return token;
+
+      //check account provider
+      const existingAccount = await getAccountByUserId(existingUser.id);
+      token.isOAuth = !!existingAccount;
 
       // update token values on settings update
       token.name = existingUser.name;
