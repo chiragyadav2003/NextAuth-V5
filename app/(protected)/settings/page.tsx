@@ -50,29 +50,29 @@ const SettingsPage = () => {
       newPassword: undefined,
       confirmNewPassword: undefined,
       role: user?.role,
+      isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
     },
   });
 
-  console.log(user?.isOAuth);
-
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
-    console.log('clicked');
-    console.log(values);
-    // startTransition(() => {
-    //   settings(values)
-    //     .then((data) => {
-    //       if (data.error) {
-    //         setError(data.error);
-    //       }
-    //       if (data.success) {
-    //         setSuccess(data.success);
-    //         update();
-    //       }
-    //     })
-    //     .catch(() => {
-    //       setError('Something went wrong!');
-    //     });
-    // });
+    setError('');
+    setSuccess('');
+
+    startTransition(() => {
+      settings(values)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
+          if (data.success) {
+            setSuccess(data.success);
+            update();
+          }
+        })
+        .catch(() => {
+          setError('Something went wrong!');
+        });
+    });
   };
 
   return (
